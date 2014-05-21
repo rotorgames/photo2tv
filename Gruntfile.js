@@ -47,7 +47,7 @@ module.exports = function(grunt) {
 		watch: {
 			concat: {
 				files: ['<%= concat.js.src %>', '<%= concat.css.src %>'],
-				tasks: ['concat','ngmin','uglify']  // Можно несколько: ['lint', 'concat']
+				tasks: ['concat']  // Можно несколько: ['lint', 'concat']
 			}
 		}
     });
