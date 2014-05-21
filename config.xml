@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+    <widget xmlns = "http://www.w3.org/ns/widgets"
+        xmlns:gap = "http://phonegap.com/ns/1.0"
+        id        = "rotorgames.medmind.release"
+        versionCode="18" 
+        version   = "0.1.8">
+
+    <!-- versionCode is optional and Android only -->
+	
+	<!--<gap:plugin name="org.apache.cordova.inappbrowser" />-->
+	<!--<gap:plugin name="com.pushwoosh.plugins.pushwoosh" />-->
+	<gap:plugin name="org.apache.cordova.device" />
+	<gap:plugin name="org.apache.cordova.dialogs" />
+	<gap:plugin name="org.apache.cordova.inappbrowser" />
+	<gap:plugin name="org.apache.cordova.network-information" />
+	
+    <name>photo2tv</name>
+
+    <description>
+    	photo2tv
+    </description>
+
+    <author href="https://rotorgames.ru" email="rotorgames@bk.ru">
+        rotorgames
+    </author>
+	
+	<preference name="permissions" value="none"/>
+	
+	<gap:platform name="android" />
+	<!--<gap:platform name="ios" />-->
+	<preference name="phonegap-version" value="3.3.0" />
+	<content src="http://rotorgames.ru/photo2tv/index.html" />
+   	<access origin="*" subdomains="true" />
+	<!--<preference name="orientation" value="portrait" />-->
+    <!--<preference name="Fullscreen" value="true" />
+    <preference name="WebViewBounce" value="true" />-->
+</widget>
