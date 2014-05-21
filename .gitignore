@@ -16,6 +16,7 @@ local.properties
 .settings/
 .loadpath
 **/_notes/**/*
+_notes
 
 # External tool builders
 .externalToolBuilders/
