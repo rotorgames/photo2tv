@@ -1,1 +1,1 @@
-// JavaScript Document
+App = angular.module('App', ['ionic'])

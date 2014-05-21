@@ -33,7 +33,7 @@ module.exports = function(grunt) {
 			main: {
                 files: {
                     // Результат задачи concat
-                    'build/scripts.ngmin.js': '<%= concat.main.dest %>'
+                    'build/scripts.ngmin.js': '<%= concat.js.dest %>'
                 }
 			}
 		},
@@ -47,7 +47,7 @@ module.exports = function(grunt) {
 		watch: {
 			concat: {
 				files: ['<%= concat.js.src %>', '<%= concat.css.src %>'],
-				tasks: ['concat']  // Можно несколько: ['lint', 'concat']
+				tasks: ['concat','ngmin','uglify']  // Можно несколько: ['lint', 'concat']
 			}
 		}
     });
@@ -60,5 +60,5 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-ngmin');
 
     // Задача по умолчанию
-    grunt.registerTask('default', ['concat', 'uglify']);
+    grunt.registerTask('default', ['concat', 'ngmin', 'uglify']);
 };
