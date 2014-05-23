@@ -1,0 +1,29 @@
+<ion-view title="Оплата">
+  <ion-content class="has-footer has-header">
+    <div class="item item-divider"> 
+      Способ оплаты
+    </div>
+  	<div class="list">
+      <ion-radio name="pays" ng-repeat="pay in pays"
+                   ng-value="pay"
+                   ng-model="data.pay">
+          {{ pay.text }}
+        </ion-radio>
+    </div>
+    <div class="item item-divider"> 
+      Экраны
+    </div>
+    <div class="list">
+      <ion-radio name="views" ng-repeat="view in views"
+                   ng-value="view"
+                   ng-model="data.view">
+          {{ view.address }}
+        </ion-radio>
+    </div>
+  </ion-content>
+  <div class="bar bar-footer">
+  	<div class="button-bar">
+      <button ng-disabled="!data.pay || !data.view" ng-click="sendPhoto()" class="button button-energized">Оплатить</button>
+    </div>
+  </div>
+</ion-view>

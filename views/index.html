@@ -1,8 +1,16 @@
-<ion-view title="photo2tv">
-  <ion-content padding="true">
-  	<img width="100%" ng-src="{{picture}}"/>
-    <button ng-click="getPicture()" class="button button-full button-balanced">
-      Сделать снимок
-    </button>
+<ion-view title="Загрузка фото">
+  <ion-content padding="true" class="has-footer has-header">
+  	<img ng-if="picture" width="100%" ng-src="{{'data:image/jpeg;base64,'+picture}}"/>
+    <div ng-if="!picture" class="card">
+      <div class="item item-text-wrap">
+        Сделайте снимок или загрузите из галереи.
+      </div>
+    </div>
   </ion-content>
+  <div class="bar bar-footer">
+  	<div class="button-bar">
+      <button ng-click="getPicture()" class="button button-balanced">{{!picture ? 'Сделать снимок' : 'Переснять'}}</button>
+      <button ng-if="picture" ng-click="sendPhoto()" class="button button-energized">Отправить</button>
+    </div>
+  </div>
 </ion-view>
