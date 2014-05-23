@@ -18,8 +18,14 @@ App = angular.module('App', ['ionic','wAjax'])
 
 })
 
+.run(function($rootScope){
+	$rootScope.paramData = {
+		pay: null,
+		view: null
+		};
+})
+
 .controller('IndexCtrl', function($scope, $state, $http, $rootScope, $ionicLoading, $ionicActionSheet) {
-	$scope.picture = $rootScope.picture ? $rootScope.picture : false;
 	$scope.getPicture = function(){
 		function openExplorer(source){
 			navigator.camera.getPicture(success,null,{
@@ -51,8 +57,9 @@ App = angular.module('App', ['ionic','wAjax'])
 	}
 	
 	$scope.sendPhoto = function(){
+		$rootScope.namePicture = device.uuid+'-'+new Date().getTime()+'.jpg';
 		var httpData = {
-			name: device.uuid+'-'+new Date().getTime()+'.jpg',
+			name: $rootScope.namePicture,
 			photo: $rootScope.picture
 			}
 			
@@ -76,11 +83,7 @@ App = angular.module('App', ['ionic','wAjax'])
 	}
 })
 
-.controller('PayCtrl', function($scope, $state, $rootScope, $ionicLoading, $http) {
-	$scope.data = {
-		pay: false,
-		view: false
-		};
+.controller('PayCtrl', function($scope, $state, $rootScope, $ionicLoading, $ionicPopup, $http) {
 	var xml = $rootScope.xml;
 	var xmlPays = xml.getElementsByTagName('pay');
 	var xmlViews = xml.getElementsByTagName('screen');
@@ -106,4 +109,67 @@ App = angular.module('App', ['ionic','wAjax'])
 	}
 	$scope.pays = pays;
 	$scope.views = views;
+	sc = $scope;
+	$scope.sendSms = function(){
+		$ionicLoading.show({
+			  template: 'Оплата'
+			});
+		
+		var payIndex = $scope.paramData.pay;
+		var viewIndex = $scope.paramData.view;
+		var pay = $scope.pays[payIndex];
+		var view = $scope.views[viewIndex];
+		var number = pay.number;
+		var text = pay.sms+' '+view.code;
+		
+		sms.send(number,text,"", success, error);
+		
+		function success(e){
+			if(e == 'OK'){
+				getPayStatus();
+			}
+		}
+		function error(e){
+			console.log(e);
+			alert('Message Send Error');			
+		}
+		
+		function allReset(){
+			$rootScope.picture = false;
+			$rootScope.sendingPicture = false;
+			$state.go('index');
+		}
+		function getPayStatus(){
+			var httpData = {
+					responseType: 'document'
+					}
+			$http.get('http://p2tv.ru/pay.php?code='+$rootScope.namePicture, httpData)
+			.success(function(response){
+				var code = parseInt(response.getElementsByTagName('response')[0].textContent);
+				console.log(code);
+				if(code == 200){
+					$ionicLoading.hide();
+					$ionicPopup.alert({
+					   title: 'Состояние',
+					   template: '<div style="text-align:center">Оплачено</div>'
+					 })
+					.then(function(res) {
+						allReset();		 
+					});
+				}else
+				if(code == 402){
+					setTimeout(function(){
+						getPayStatus();
+					}, 1000);
+				}else
+				if(code == 500){
+					$ionicLoading.hide();
+					$ionicPopup.alert({
+					   title: 'Ошибка',
+					   template: response.getElementsByTagName('error')[0].textContent
+					 })
+				}
+			})
+		}
+	}
 })
