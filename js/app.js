@@ -25,24 +25,41 @@ App = angular.module('App', ['ionic','wAjax'])
 		};
 })
 
-.controller('IndexCtrl', function($scope, $state, $http, $rootScope, $ionicLoading, $ionicActionSheet) {
-	$scope.getPicture = function(){
-		function openExplorer(source){
-			navigator.camera.getPicture(success,null,{
-				quality: 50, 
-				sourceType : source, //Camera.PictureSourceType
-				destinationType: Camera.DestinationType.DATA_URL,
-				encodingType: Camera.EncodingType.JPEG,
-				targetWidth: 1024
-			})
-			function success (uri){
-				$rootScope.sendingPicture = false;
-				$rootScope.picture = uri;
-				$scope.picture = uri;
-				$scope.$digest();
-			}
+.factory('resetParams', function($rootScope){
+	return {
+		updatePicture: function(){
+			$rootScope.paramData = {
+				pay: null,
+				view: null
+				}
+		},
+		all: function(){
+			$rootScope.picture = false;
+			$rootScope.sendingPicture = false;
+			$rootScope.paramData = {
+				pay: null,
+				view: null
+				}
 		}
-		$ionicActionSheet.show({
+	}
+})
+
+.controller('IndexCtrl', function($scope, $state, $http, $rootScope, $ionicLoading, $ionicActionSheet, resetParams) {
+	$scope.getPicture = function(){
+		  navigator.camera.getPicture(success,null,{
+			  quality: 50, 
+			  sourceType : Camera.PictureSourceType.CAMERA,
+			  destinationType: Camera.DestinationType.DATA_URL,
+			  encodingType: Camera.EncodingType.JPEG,
+			  targetWidth: 1024
+		  })
+		  function success (uri){
+			  $rootScope.sendingPicture = false;
+			  $rootScope.picture = uri;
+			  $scope.picture = uri;
+			  $scope.$digest();
+		  }
+		/*$ionicActionSheet.show({
 		   buttons: [
 			 { text: 'Галерея' },
 			 { text: 'Камера' },
@@ -53,7 +70,7 @@ App = angular.module('App', ['ionic','wAjax'])
 			 openExplorer(index);
 			 return true;
 		   }
-		 });
+		 });*/
 	}
 	
 	$scope.sendPhoto = function(){
@@ -64,6 +81,8 @@ App = angular.module('App', ['ionic','wAjax'])
 			}
 			
 		if(!$rootScope.sendingPicture){
+			resetParams.updatePicture(); 
+			
 			var httpConfig = {
 				responseType:'document'
 				}
@@ -83,7 +102,7 @@ App = angular.module('App', ['ionic','wAjax'])
 	}
 })
 
-.controller('PayCtrl', function($scope, $state, $rootScope, $ionicLoading, $ionicPopup, $http) {
+.controller('PayCtrl', function($scope, $state, $rootScope, $ionicLoading, $ionicPopup, $http, resetParams) {
 	var xml = $rootScope.xml;
 	var xmlPays = xml.getElementsByTagName('pay');
 	var xmlViews = xml.getElementsByTagName('screen');
@@ -133,12 +152,6 @@ App = angular.module('App', ['ionic','wAjax'])
 			console.log(e);
 			alert('Message Send Error');			
 		}
-		
-		function allReset(){
-			$rootScope.picture = false;
-			$rootScope.sendingPicture = false;
-			$state.go('index');
-		}
 		function getPayStatus(){
 			var httpData = {
 					responseType: 'document'
@@ -154,7 +167,8 @@ App = angular.module('App', ['ionic','wAjax'])
 					   template: '<div style="text-align:center">Оплачено</div>'
 					 })
 					.then(function(res) {
-						allReset();		 
+						resetParams.all();	
+						$state.go('index');	 
 					});
 				}else
 				if(code == 402){
