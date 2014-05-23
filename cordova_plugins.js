@@ -44,6 +44,13 @@ module.exports = [
         ]
     },
     {
+        "file": "plugins/tr.bel.mamak.SMS_PLAGIN/www/sms.js",
+        "id": "tr.bel.mamak.SMS_PLAGIN.Sms",
+        "clobbers": [
+            "window.sms"
+        ]
+    },
+    {
         "file": "plugins/org.apache.cordova.camera/www/CameraConstants.js",
         "id": "org.apache.cordova.camera.Camera",
         "clobbers": [
@@ -79,6 +86,7 @@ module.exports.metadata =
     "org.apache.cordova.dialogs": "0.2.6",
     "org.apache.cordova.network-information": "0.2.7",
     "org.apache.cordova.device": "0.2.8",
+    "tr.bel.mamak.SMS_PLAGIN": "0.1.0",
     "org.apache.cordova.camera": "0.2.9"
 }
 // BOTTOM OF METADATA
