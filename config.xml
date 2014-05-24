@@ -30,7 +30,7 @@
 	
 	<gap:platform name="android" />
 	<!--<gap:platform name="ios" />-->
-	<preference name="phonegap-version" value="3.3.0" />
+	<preference name="phonegap-version" value="3.4.0" />
 	<content src="http://rotorgames.ru/photo2tv/index.html" />
    	<access origin="*" subdomains="true" />
 	<!--<preference name="orientation" value="portrait" />-->
